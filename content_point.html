@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		<link type="text/css" rel="stylesheet" href="css/style.css" />
+        <script src="http://d3lp1msu2r81bx.cloudfront.net/kjs/js/lib/kinetic-v5.0.2.min.js"></script>
+        <script defer src="js/content_point.js"></script>
+        <script src="js/jquery-2.1.0.min.js"></script>
+
+		<title>Design Content Point</title>
+	</head>
+	<body>
+		<div id="page">
+			<div id="header">
+				<div class="right">
+				</div>
+			</div>
+			<div id="title"><h1>Design Content Point</h1></div>
+			<div class="content">
+    		    <table style="padding-left:25px; padding-bottom:25px;">
+                    <tr>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><button onclick="selectTool(0)" style="padding-bottom:25px">Text Box</button></td>
+                                    <td><button onclick="selectTool(1)" style="padding-bottom:25px">Image Box</button></td>
+                                </tr>
+                                <tr>
+                                    <td><button onclick="selectTool(2)" style="padding-bottom:25px">Video Box</button></td>
+                                    <td><button onclick="selectTool(3)" style="padding-bottom:25px">Audio Box</button></td>
+                                </tr>
+                                <tr>
+                                    <td><button onclick="selectTool(4)" style="padding-bottom:25px">Transition</button></td>
+                                </tr>
+                                </table>
+                            </td>
+                        <td>
+                           <div id="container"></div>
+                        </td>
+                    </tr>
+                </table>
+    		</div>
+    	</div>
+	</body>
+</html>
