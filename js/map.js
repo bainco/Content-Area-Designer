@@ -74,6 +74,11 @@ function placeContentArea(theLocation, theID) {
 	   console.log(fingerPrint.id());
 	});
 
+    fingerPrint.on('dblclick', function() {
+
+        //STUB FOR REDIRECT TO ADD/EDIT PAGE
+    });
+
 	fingerPrint_Layer.add(fingerPrint);
 	fingerPrint_Layer.draw();
 }
