@@ -19,9 +19,13 @@ var TRANSITION = 4;
 
 /** @constant {number} width of content point (parchment)*/
 var CP_WIDTH = 824;
-
 /** @constant {number} height of content point (parchment)*/
 var CP_HEIGHT = 625;
+
+/** @constant {number} width of content point (parchment)*/
+var IMAGE_MAP_WIDTH = 824;
+/** @constant {number} height of content point (parchment)*/
+var IMAGE_MAP_HEIGHT = 625;
 
 /** @constant {number} */
 var DEFAULT_STROKE_WIDTH = 2;
@@ -79,6 +83,10 @@ function init() {
     gStage.add(gBackground_layer);
     gStage.add(gBox_layer);
     gStage.add(gDrawing_layer);
+
+    $('#addImg').on('click', function() {
+        uploadBackground();
+    });
 }
 
 /**
@@ -142,6 +150,39 @@ function setupBackground() {
     canvasBackgroundImage.src = 'img/cp_background.png'; //Location of our background
 }
 
+/**
+ * Draws a ContentBox.
+ *
+ * This method takes a ContentBox and draws it on our gStage. The color and label
+ * of the box depend on the type of the box. Also sets listeners on the box for
+ * double click and single click.
+ *
+ * @param {ContentBox} theContentBox The box to draw.
+ */
+function uploadBackground() {
+
+    var canvasBackgroundImage = new Image();
+
+    canvasBackgroundImage.onload = function() {
+        var myBackground = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: canvasBackgroundImage,
+            width: IMAGE_MAP_WIDTH,
+            height: IMAGE_MAP_HEIGHT
+        });
+
+        gBackground_layer.removeChildren();
+        gBackground_layer.add(myBackground);
+        gBackground_layer.draw();
+    }
+
+  var theFile = document.getElementById('uploadimage').files[0];
+  var url = window.URL;
+  var theSRC = url.createObjectURL(theFile);
+
+  canvasBackgroundImage.src = theSRC;
+}
 
 /**
  * Draws a ContentBox.
