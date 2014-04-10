@@ -1,117 +1,157 @@
-var fingerPrintImage = new Image();
-var fingerPrint_Layer = new Kinetic.Layer();
+/**
+ * @overview This script deals with the map interface for adding content areas.
+ * @name    map.js
+ * @author 	Connor Bain (bainco@email.sc.edu)
+ * @version 0.1
+ */
+/* CONSTANTS */
+/** @constant {number} width of map*/
+var MAP_WIDTH = 657;
+/** @constant {number} height of map*/
+var MAP_HEIGHT = 667;
 
-function ContentArea(theX, theY, theName, theContent) {
+/** @global {Image} the fingerprint image*/
+var gFingerPrintImage;
+/** @global {ContentArea[]} array of ContentAreas*/
+var gContentAreas;
+/** @global {Kinetic.Stage} our stage*/
+var gStage;
+/** @global {Kinetic.Layer} layer for the fingerprints/ContentAreas*/
+var gFingerPrint_layer;
+/** @global {Kinetic.Layer} layer for the background*/
+var gBackground_layer;
 
-    this.x = theX;
-    this.y = theY;
-    this.name = theName;
+/**
+ * Initialize the page.
+ *
+ * Set the Kinetic.Stage for drawing, assign default values to global variables,
+ * and load necessary images.
+ */
+function init() {
 
-    if (theContent == undefined) {
+    gStage = new Kinetic.Stage({
+        container: 'container',
+        width: 657,
+        height: 667,
+      });
 
-        this.content = new Array();
-    }
-    else {
-        this.content = theContent;
-    }
+    gFingerPrint_layer = new Kinetic.Layer();
+
+    downloadContentAreas();
+
+    gFingerPrintImage = new Image();
+    gFingerPrintImage.src = 'img/fingerprint.png'; //Location of our background
+
+    setupBackground();
+    gStage.add(gFingerPrint_layer);
 }
 
-function writeMessage(message) {
-	text.setText(message);
-	layer.draw();
-  }
+/**
+ * Setup the background.
+ *
+ * Load the correct image, sets the layer, adds it to the stage, and
+ * then sets a listener on it.
+ */
+function setupBackground() {
 
-function createContentArea(mouseLocation) {
+     //Layer for our background
+    gBackground_layer = new Kinetic.Layer();
 
-    var title = prompt("Please enter the name of the content point:","");
+    //Canvas background image
+    var canvasBackgroundImage = new Image();
+    canvasBackgroundImage.src = 'img/map.png'; //Location of our background
+    canvasBackgroundImage.onload = function() {
+        var backgroundImage = new Kinetic.Image({
+            x: 0,
+            y: 0,
+            image: canvasBackgroundImage,
+            width: MAP_WIDTH,
+            height: MAP_HEIGHT
+        });
 
-    //Correct to center fingerPrint
-    mouseLocation.x = mouseLocation.x - (fingerPrintImage.width / 2);
-    mouseLocation.y = mouseLocation.y - (fingerPrintImage.height / 2);
+        backgroundImage.on("dblclick dbltap", function() {
+            createContentArea(gStage.getPointerPosition());
+        });
 
-    uploadContentArea();
-    placeContentArea(mouseLocation, title);
+        gBackground_layer.add(backgroundImage);
+        gBackground_layer.draw();
+    };
 
-    console.log("Added content area to map.");
-    //window.location.replace("");
+    gStage.add(gBackground_layer);
 }
 
-function uploadContentArea() {
+/**
+ * Downloads the ContentAreas from the server.
+ *
+ * STUB
+ */
+function downloadContentAreas() {
+
+    //TO-DO STUB
+    console.log("Loading fingerprints.");
+}
+
+/**
+ * Uploads the ContentAreas to the server.
+ *
+ * STUB
+ */
+function uploadContentAreas() {
 
     //TO-DO STUB
     console.log("Uploaded new area to server.");
 }
 
-function downloadContentAreas() {
+/**
+ * Creates a content area.
+ *
+ * Takes the current mouseLocation and adds a ContentArea to the map
+ * at that point. Also prompts for a title.
+ *
+ * @param {Object} mouseLocation The 2d vector mouse location.
+ */
+function createContentArea(mouseLocation) {
 
-    console.log("Loading fingerprints.");
-    fingerPrintImage.src = 'img/fingerprint.png'; //Location of our background
+    var title = prompt("Please enter the name of the content point:","");
 
-    fingerPrintImage.onload = function() {
+    //Correct to center fingerPrint
+    mouseLocation.x = mouseLocation.x - (gFingerPrintImage.width / 2);
+    mouseLocation.y = mouseLocation.y - (gFingerPrintImage.height / 2);
 
-	/*fingerPrint.on('mousedown', function() {
-	writeMessage('Mousedown fingerprint');
-	console.log(fingerPrint.id());
-	});
+    uploadContentAreas();
+    drawContentArea(mouseLocation, title);
 
-    fingerPrint_Layer.add(fingerPrint);
-    */
-
-    stage.add(fingerPrint_Layer);
-    };
+    console.log("Added content area to map.");
+    //window.location.replace("");
 }
 
-function placeContentArea(theLocation, theID) {
+/**
+ * Draws a ContentArea.
+ *
+ * Takes an input ID and location and draws a fingerprint on the map by
+ * adding it to the fingerprint layer. Also sets listeners on that fingerprint.
+ */
+function drawContentArea(theLocation, theID) {
 
-    var fingerPrint = new Kinetic.Image({
+    console.log("Drawing?");
+    var contentArea = new Kinetic.Image({
 		x: theLocation.x,
 		y: theLocation.y,
-		image: fingerPrintImage,
+		image: gFingerPrintImage,
 		id: theID
 	});
 
-	fingerPrint.on('mousedown', function() {
-	   console.log(fingerPrint.id());
+	contentArea.on('mousedown', function() {
+	   console.log(contentArea.id());
 	});
 
-    fingerPrint.on('dblclick', function() {
+    contentArea.on('dblclick', function() {
 
         //STUB FOR REDIRECT TO ADD/EDIT PAGE
     });
 
-	fingerPrint_Layer.add(fingerPrint);
-	fingerPrint_Layer.draw();
+	gFingerPrint_layer.add(contentArea);
+	gFingerPrint_layer.draw();
 }
 
-  var stage = new Kinetic.Stage({
-	container: 'container',
-	width: 657,
-	height: 667,
-  });
-
-  //Layer for our background
-var background_layer = new Kinetic.Layer();
-stage.add(background_layer);
-
-//Canvas background image
-var canvasBackgroundImage = new Image();
-canvasBackgroundImage.onload = function() {
-	var backgroundImage = new Kinetic.Image({
-		x: 0,
-		y: 0,
-		image: canvasBackgroundImage,
-		width: 657,
-		height: 667
-	});
-
-	backgroundImage.on("dblclick dbltap", function() {
-
-	createContentArea(stage.getPointerPosition());
-	});
-
-	background_layer.add(backgroundImage);
-	background_layer.draw();
-};
-canvasBackgroundImage.src = 'img/map.png'; //Location of our background
-
-downloadContentAreas();
+init();
